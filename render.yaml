@@ -1,0 +1,88 @@
+# Render deployment configuration for Phytofix Backend
+# Documentation: https://render.com/docs/yaml-spec
+
+services:
+  - type: web
+    name: phytofix-backend
+    env: docker
+    region: oregon
+    plan: starter
+    domain: api.phytofix.ng
+    buildCommand: |
+      composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+      composer dump-autoload --optimize --no-interaction --no-progress
+    startCommand: |
+      service php8.2-fpm start && nginx -g 'daemon off;'
+    envVars:
+      # Application settings
+      - key: APP_NAME
+        value: Phytofix
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_URL
+        value: https://api.phytofix.ng
+      - key: APP_LOCALE
+        value: en
+      - key: APP_FALLBACK_LOCALE
+        value: en
+
+      # Logging
+      - key: LOG_CHANNEL
+        value: stack
+      - key: LOG_STACK
+        value: single
+      - key: LOG_LEVEL
+        value: warning
+
+      # Database (MySQL) - configure these in Render dashboard
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        value: your-db-host.com
+      - key: DB_PORT
+        value: "3306"
+      - key: DB_DATABASE
+        value: phytofix
+      - key: DB_USERNAME
+        value: phytofix_user
+      - key: DB_PASSWORD
+        sync: false
+
+      # Session & Cache
+      - key: SESSION_DRIVER
+        value: database
+      - key: SESSION_LIFETIME
+        value: "120"
+      - key: SESSION_ENCRYPT
+        value: "false"
+      - key: CACHE_STORE
+        value: database
+      - key: QUEUE_CONNECTION
+        value: database
+      - key: FILESYSTEM_DISK
+        value: local
+
+      # Broadcasting & Mail
+      - key: BROADCAST_CONNECTION
+        value: log
+      - key: MAIL_MAILER
+        value: log
+
+      # Admin & Contact
+      - key: ADMIN_EMAIL
+        value: admin@phytofix.ng
+      - key: CONTACT_INBOX_EMAIL
+        value: info.phytofix@gmail.com
+
+      # Frontend
+      - key: VITE_APP_NAME
+        value: "${APP_NAME}"
+
+      # Seed key (for database seeder)
+      - key: SEED_KEY
+        sync: false
+
+    healthCheckPath: /
+    healthCheckTimeout: 300
