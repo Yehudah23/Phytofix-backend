@@ -1,4 +1,4 @@
-FROM php:8.3-fpm
+FROM php:8.5-fpm
 
 # Install system dependencies & PHP extensions
 RUN apt-get update && apt-get install -y \
@@ -41,5 +41,5 @@ RUN composer dump-autoload --optimize --no-interaction --no-progress
 
 EXPOSE 80
 
-# Start Nginx and PHP-FPM
-CMD service php8.3-fpm start && nginx -g 'daemon off;'
+# Start PHP-FPM and Nginx
+CMD php-fpm -D && nginx -g 'daemon off;'

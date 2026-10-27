@@ -8,11 +8,8 @@ services:
     region: oregon
     plan: starter
     domain: api.phytofix.ng
-    buildCommand: |
-      composer install --no-dev --optimize-autoloader --no-interaction --no-progress
-      composer dump-autoload --optimize --no-interaction --no-progress
     startCommand: |
-      service php8.3-fpm start && nginx -g 'daemon off;'
+      php-fpm -D && nginx -g 'daemon off;'
     envVars:
       # Application settings
       - key: APP_NAME
