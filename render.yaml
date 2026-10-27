@@ -12,7 +12,7 @@ services:
       composer install --no-dev --optimize-autoloader --no-interaction --no-progress
       composer dump-autoload --optimize --no-interaction --no-progress
     startCommand: |
-      service php8.2-fpm start && nginx -g 'daemon off;'
+      service php8.3-fpm start && nginx -g 'daemon off;'
     envVars:
       # Application settings
       - key: APP_NAME
