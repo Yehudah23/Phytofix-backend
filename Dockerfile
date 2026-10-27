@@ -37,7 +37,7 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 COPY ./docker/nginx.conf /etc/nginx/sites-available/default
 
 # Generate optimized autoloader and cache config
-RUN composer dump-autoload --optimize --no-interaction --no-progress
+RUN composer dump-autoload --optimize --no-interaction
 
 EXPOSE 80
 
