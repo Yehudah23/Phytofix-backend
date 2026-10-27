@@ -9,7 +9,7 @@ services:
     plan: starter
     domain: api.phytofix.ng
     startCommand: |
-      php-fpm -D && nginx -g 'daemon off;'
+      php-fpm -D && exec nginx -g 'daemon off;'
     envVars:
       # Application settings
       - key: APP_NAME

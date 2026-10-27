@@ -41,5 +41,5 @@ RUN composer dump-autoload --optimize --no-interaction --no-progress
 
 EXPOSE 80
 
-# Start PHP-FPM and Nginx
-CMD php-fpm -D && nginx -g 'daemon off;'
+# Start PHP-FPM and keep Nginx in the foreground
+CMD ["sh", "-c", "php-fpm -D && exec nginx -g 'daemon off;'"]
