@@ -27,16 +27,28 @@ services:
         value: en
       - key: APP_FALLBACK_LOCALE
         value: en
+      - key: APP_FAKER_LOCALE
+        value: en_US
+      - key: APP_MAINTENANCE_DRIVER
+        value: file
+
+      # Security - Set in Render dashboard
+      - key: APP_KEY
+        sync: false
+      - key: BCRYPT_ROUNDS
+        value: "12"
 
       # Logging
       - key: LOG_CHANNEL
         value: stack
       - key: LOG_STACK
         value: single
+      - key: LOG_DEPRECATIONS_CHANNEL
+        value: null
       - key: LOG_LEVEL
         value: warning
 
-      # Database (MySQL) - configure these in Render dashboard
+      # Database (MySQL) - Set password in Render dashboard
       - key: DB_CONNECTION
         value: mysql
       - key: DB_HOST
@@ -57,18 +69,44 @@ services:
         value: "120"
       - key: SESSION_ENCRYPT
         value: "false"
-      - key: CACHE_STORE
-        value: database
-      - key: QUEUE_CONNECTION
-        value: database
+      - key: SESSION_PATH
+        value: "/"
+      - key: SESSION_DOMAIN
+        value: null
+
+      # Broadcasting
+      - key: BROADCAST_CONNECTION
+        value: log
+
+      # Filesystem
       - key: FILESYSTEM_DISK
         value: local
 
-      # Broadcasting & Mail
-      - key: BROADCAST_CONNECTION
-        value: log
+      # Queue
+      - key: QUEUE_CONNECTION
+        value: database
+
+      # Cache
+      - key: CACHE_STORE
+        value: database
+
+      # Mail
       - key: MAIL_MAILER
         value: log
+      - key: MAIL_SCHEME
+        value: null
+      - key: MAIL_HOST
+        value: localhost
+      - key: MAIL_PORT
+        value: "2525"
+      - key: MAIL_USERNAME
+        value: null
+      - key: MAIL_PASSWORD
+        value: null
+      - key: MAIL_FROM_ADDRESS
+        value: "hello@example.com"
+      - key: MAIL_FROM_NAME
+        value: "${APP_NAME}"
 
       # Admin & Contact
       - key: ADMIN_EMAIL
@@ -76,13 +114,13 @@ services:
       - key: CONTACT_INBOX_EMAIL
         value: info.phytofix@gmail.com
 
+      # Seed key - Set in Render dashboard
+      - key: SEED_KEY
+        sync: false
+
       # Frontend
       - key: VITE_APP_NAME
         value: "${APP_NAME}"
-
-      # Seed key (for database seeder)
-      - key: SEED_KEY
-        sync: false
 
     healthCheckPath: /
     healthCheckTimeout: 300
