@@ -1,0 +1,6 @@
+#!/bin/sh
+set -e
+
+php artisan migrate --force
+php-fpm -D
+exec nginx -g 'daemon off;'

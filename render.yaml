@@ -1,5 +1,4 @@
 # Render deployment configuration for Phytofix Backend.
-# Keep production on MySQL until the controlled PostgreSQL cutover.
 
 services:
   - type: web
@@ -8,7 +7,7 @@ services:
     region: oregon
     plan: free
     domain: api.phytofix.ng
-    startCommand: php-fpm -D && exec nginx -g 'daemon off;'
+    startCommand: /usr/local/bin/start.sh
     envVars:
       # Application settings
       - key: APP_NAME
@@ -44,9 +43,13 @@ services:
       - key: LOG_LEVEL
         value: warning
 
-      # Existing production MySQL source
+      # PostgreSQL target; set DB_URL in the Render dashboard.
       - key: DB_CONNECTION
-        value: mysql
+        value: pgsql
+      - key: DB_URL
+        sync: false
+
+      # Retained MySQL source settings for a future data import.
       - key: DB_HOST
         sync: false
       - key: DB_PORT

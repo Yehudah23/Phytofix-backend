@@ -35,11 +35,12 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 
 # Configure Nginx to point to public/
 COPY ./docker/nginx.conf /etc/nginx/sites-available/default
+COPY ./docker/start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
 
 # Generate optimized autoloader and cache config
 RUN composer dump-autoload --optimize --no-interaction
 
 EXPOSE 80
 
-# Start PHP-FPM and keep Nginx in the foreground
-CMD ["sh", "-c", "php-fpm -D && exec nginx -g 'daemon off;'"]
+CMD ["/usr/local/bin/start.sh"]
