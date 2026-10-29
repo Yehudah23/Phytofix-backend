@@ -1,15 +1,14 @@
-# Render deployment configuration for Phytofix Backend
-# Documentation: https://render.com/docs/yaml-spec
+# Render deployment configuration for Phytofix Backend.
+# Keep production on MySQL until the controlled PostgreSQL cutover.
 
 services:
   - type: web
     name: phytofix-backend
     env: docker
     region: oregon
-    plan: starter
+    plan: free
     domain: api.phytofix.ng
-    startCommand: |
-      php-fpm -D && exec nginx -g 'daemon off;'
+    startCommand: php-fpm -D && exec nginx -g 'daemon off;'
     envVars:
       # Application settings
       - key: APP_NAME
@@ -45,19 +44,21 @@ services:
       - key: LOG_LEVEL
         value: warning
 
-      # Database (MySQL) - Set password in Render dashboard
+      # Existing production MySQL source
       - key: DB_CONNECTION
         value: mysql
       - key: DB_HOST
-        value: your-db-host.com
+        sync: false
       - key: DB_PORT
-        value: "3306"
+        sync: false
       - key: DB_DATABASE
-        value: phytofix
+        sync: false
       - key: DB_USERNAME
-        value: phytofix_user
+        sync: false
       - key: DB_PASSWORD
         sync: false
+      - key: APP_DB_MIGRATION_MAINTENANCE
+        value: "false"
 
       # Session & Cache
       - key: SESSION_DRIVER
@@ -119,5 +120,5 @@ services:
       - key: VITE_APP_NAME
         value: "${APP_NAME}"
 
-    healthCheckPath: /
+    healthCheckPath: /up
     healthCheckTimeout: 300

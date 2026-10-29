@@ -41,6 +41,8 @@ return [
 
     'debug' => (bool) env('APP_DEBUG', false),
 
+    'db_migration_maintenance' => (bool) env('APP_DB_MIGRATION_MAINTENANCE', false),
+
     /*
     |--------------------------------------------------------------------------
     | Application URL
